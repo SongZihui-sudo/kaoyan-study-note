@@ -21,21 +21,22 @@ typedef struct linkListNode
 
 typedef struct linkList
 {
+    size_t length;
     union
     {
         struct
         {
             struct linkListNode* mHead;
-            size_t length;
         } linklistHead;
         struct
         {
             struct linkListNode* mHead;
             struct linkListNOde* mTail;
-            size_t length;
         } linklistHeadTail;
     } linklistType;
 } linkList;
+
+/*－－－－－－－－－－－－ 带头节点的单链表 －－－－－－－－－－－－－－－－*/
 
 void listWithhead_head_init(linkList* this, list* datas);
 
@@ -45,4 +46,20 @@ void listWithhead_remove(linkList* this, size_t index);
 
 const linkListNode* listWithhead_get(linkList* this, size_t index);
 
-void linstWithhead_replace(linkList* this, size_t index, void* data);
+void listWithhead_replace(linkList* this, size_t index, void* data);
+
+void listWithhead_insert(linkList* this, size_t index, void* data);
+
+/*－－－－－－－－－－－－－－ 带头节点与尾节点的双向循环链表 －－－－－－－－－－－－－－－－*/
+
+void listWithheadTail_head_init(linkList *this, list *datas);
+
+void listWithheadTail_tail_init(linkList *this, list *datas);
+
+void listWithheadTail_remove(linkList *this, size_t index);
+
+const linkListNode *listWithheadTail_get(linkList *this, size_t index);
+
+void listWithheadTail_replace(linkList *this, size_t index, void *data);
+
+void listWithheadTail_insert(linkList *this, size_t index, void *data);

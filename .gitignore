@@ -31,8 +31,4 @@
 *.out
 *.app
 
-array
-
-linklist
-
-list
+.vscode
