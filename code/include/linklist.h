@@ -1,4 +1,5 @@
-#pragma once
+#ifndef linklist_h
+#define linklist_h
 
 #include <stdio.h>
 #include <assert.h>
@@ -63,3 +64,5 @@ const linkListNode *listWithheadTail_get(linkList *this, size_t index);
 void listWithheadTail_replace(linkList *this, size_t index, void *data);
 
 void listWithheadTail_insert(linkList *this, size_t index, void *data);
+
+#endif

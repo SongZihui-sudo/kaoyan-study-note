@@ -1,11 +1,8 @@
-#include "list.h"
+#include <list.h>
 
-void list_init(list* this, size_t size)
+void list_init(list *this, size_t size)
 {
-    if (!this)
-    {
-        this = (void**)malloc(sizeof(void*) * size);
-    }
+    this->ptr = (int*)malloc(sizeof(int) * size);
     this->length = 0;
     this->size = size;
 }
@@ -83,4 +80,5 @@ void list_push_back(list *this, void *data)
         return;
     }
     this->ptr[this->length] = data;
+    this->length++;
 }
