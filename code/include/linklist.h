@@ -51,7 +51,7 @@ void listWithhead_replace(linkList *this, size_t index, void *data);
 
 void listWithhead_insert(linkList *this, size_t index, void *data);
 
-#define listWithhead_print(this, printfunc)               \
+#define listWithhead_print(this, printfunc)                    \
     linkListNode *tmp = link->linklistType.linklistHead.mHead; \
     while (tmp)                                                \
     {                                                          \
@@ -73,11 +73,11 @@ void listWithheadTail_replace(linkList *this, size_t index, void *data);
 
 void listWithheadTail_insert(linkList *this, size_t index, void *data);
 
-#define listWithheadTail_print(this, type)                         \
+#define listWithheadTail_print(this, printfunc)                    \
     linkListNode *tmp = this->linklistType.linklistHeadTail.mHead; \
     while (tmp)                                                    \
     {                                                              \
-        printf(*(type *)tmp->data);                                \
+        printfunc;                                                 \
         tmp->ptr.nextAndpre.next;                                  \
     }
 #endif
