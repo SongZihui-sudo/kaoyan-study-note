@@ -1,4 +1,4 @@
-#include "../../include/linklist.h"
+#include <linklist.h>
 
 /*－－－－－－－－－－－－ 带头节点的单链表 －－－－－－－－－－－－－－－－*/
 

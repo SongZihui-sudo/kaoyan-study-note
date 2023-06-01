@@ -1,4 +1,4 @@
-#include "../include/string.h"
+#include <mystring.h>
 
 void string_init(string *self, const char *str)
 {

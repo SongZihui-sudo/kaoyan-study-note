@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "list.h"
+#include <list.h>
 
 typedef struct linkListNode
 {

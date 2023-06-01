@@ -5,9 +5,9 @@ include(CTest)
 enable_testing()
 
 include_directories(./include/)
-add_executable(list ./LinearTable/List/list.c ./LinearTable/List/main.c)
+add_executable(list ./list/list.c ./list/main.c)
 
-add_executable(string ./String/string.c ./String/main.c)
+add_executable(string ./string/string.c ./string/main.c)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
