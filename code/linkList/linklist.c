@@ -5,10 +5,6 @@
 void listWithhead_head_init(linkList *this, list *datas)
 {
     assert(datas);
-    if (!this)
-    {
-        this = (linkList*)malloc(sizeof(linkList)); 
-    }
     this->linklistType.linklistHead.mHead = (linkListNode*)malloc(sizeof( linkListNode));
     this->length = datas->length;
     for (size_t i = 0; i < datas->length; i++)
@@ -17,17 +13,12 @@ void listWithhead_head_init(linkList *this, list *datas)
         newNode->data = list_get(datas, i);
         newNode->ptr.next = this->linklistType.linklistHead.mHead;
         this->linklistType.linklistHead.mHead = newNode;
-        this->length++;
     }
 }
 
 void listWithhead_tail_init(linkList *this, list *datas)
 {
     assert(datas);
-    if (!this)
-    {
-        this = (linkList *)malloc(sizeof(linkList));
-    }
     this->linklistType.linklistHead.mHead = (linkListNode *)malloc(sizeof(linkListNode));
     this->length = datas->length;
     for (size_t i = 0; i < datas->length; i++)

@@ -11,9 +11,9 @@ typedef struct list
     size_t length;
 } list;
 
-void list_init(list* this, size_t size);
+void list_init(list *this, size_t size, void *ptr);
 
-void list_insert(list* this, size_t index, void* data);
+void list_insert(list *this, size_t index, void *data);
 
 const void* list_get(list* this, size_t index);
 

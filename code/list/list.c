@@ -1,84 +1,91 @@
 #include <list.h>
 
-void list_init(list *this, size_t size)
+void list_init(list *self, size_t size, void* ptr)
 {
-    this->ptr = (int*)malloc(sizeof(int) * size);
-    this->length = 0;
-    this->size = size;
+    if (!ptr)
+    {
+        self->ptr = (void **)malloc(sizeof(void *) * size);
+    }
+    else
+    {
+        self->ptr = &ptr;
+    }    
+    self->length = 0;
+    self->size = size;
 }
 
-void list_insert(list* this, size_t index, void* data)
+void list_insert(list* self, size_t index, void* data)
 {
-    assert(this);
-    if (this->length + 1 > this->size || index < 0 || index > this->length)
+    assert(self);
+    if (self->length + 1 > self->size || index < 0 || index > self->length)
     {
         printf("<<Error>> index out of the range!");
         return;
     }
-    for (size_t i = this->length + 1; i > index; i--)
+    for (size_t i = self->length + 1; i > index; i--)
     {
-        this->ptr[i] = this->ptr[i-1];
+        self->ptr[i] = self->ptr[i-1];
     }
-    this->ptr[index] = data;
-    this->length++;
+    self->ptr[index] = data;
+    self->length++;
 }
 
-const void* list_get(list* this, size_t index)
+const void* list_get(list* self, size_t index)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("<<Error>> index out of the range!");
         return NULL;
     }
-    return this->ptr[index];
+    return self->ptr[index];
 }
 
 
-int list_replace(list* this, int index, void* newVal)
+int list_replace(list* self, int index, void* newVal)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("<<Error>> index out of the range!");
         return -1;
     }
-    this->ptr[index] = newVal;
+    self->ptr[index] = newVal;
 }
 
-int list_empty(list* this)
+int list_empty(list* self)
 {
-    assert(this);
-    if (this->length)
+    assert(self);
+    if (self->length)
     {
         return 1;
     }
     return 0;
 }
 
-void list_remove(list* this, size_t index)
+void list_remove(list* self, size_t index)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("<<Error>> index out of the range!");
         return;
     }
-    for (size_t i = index; i < this->length; i++)
+    for (size_t i = index; i < self->length; i++)
     {
-        this->ptr[i] = this->ptr[i +1];
+        self->ptr[i] = self->ptr[i +1];
     }
-    this->length--;
+    self->length--;
 }
 
-void list_push_back(list *this, void *data)
+void list_push_back(list *self, void *data)
 {
-    assert(this);
-    if (this->length + 1 > this->size)
+    assert(self);
+    if (self->length + 1 > self->size)
     {
         printf("<<Error>> index out of the range!");
         return;
     }
-    this->ptr[this->length] = data;
-    this->length++;
+    self->ptr[self->length] = data;
+    self->length++;
 }
