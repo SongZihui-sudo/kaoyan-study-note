@@ -1,45 +1,73 @@
 #include <linklist.h>
 
+int linklist_empty(linkList *self)
+{
+    assert(self);
+    if (!self->length)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int linklist_length(linkList *self)
+{
+    assert(self);
+    return self->length;
+}
+
 /*－－－－－－－－－－－－ 带头节点的单链表 －－－－－－－－－－－－－－－－*/
 
-void listWithhead_head_init(linkList *this, list *datas)
+void listWithhead_head_init(linkList *self, list *datas)
 {
-    assert(datas);
-    this->linklistType.linklistHead.mHead = (linkListNode*)malloc(sizeof( linkListNode));
-    this->length = datas->length;
-    for (size_t i = 0; i < datas->length; i++)
+    self->linklistType.linklistHead.mHead = (linkListNode *)malloc(sizeof(linkListNode));
+    if (datas)
     {
-        linkListNode* newNode = (linkListNode*)malloc(sizeof(linkListNode));
-        newNode->data = list_get(datas, i);
-        newNode->ptr.next = this->linklistType.linklistHead.mHead;
-        this->linklistType.linklistHead.mHead = newNode;
+        self->length = datas->length;
+        for (size_t i = 0; i < datas->length; i++)
+        {
+            linkListNode *newNode = (linkListNode *)malloc(sizeof(linkListNode));
+            newNode->data = list_get(datas, i);
+            newNode->ptr.next = self->linklistType.linklistHead.mHead;
+            self->linklistType.linklistHead.mHead = newNode;
+        }
+    }
+    else
+    {
+        self->length = 0;
     }
 }
 
-void listWithhead_tail_init(linkList *this, list *datas)
+void listWithhead_tail_init(linkList *self, list *datas)
 {
-    assert(datas);
-    this->linklistType.linklistHead.mHead = (linkListNode *)malloc(sizeof(linkListNode));
-    this->length = datas->length;
-    for (size_t i = 0; i < datas->length; i++)
+    self->linklistType.linklistHead.mHead = (linkListNode *)malloc(sizeof(linkListNode));
+    if (datas)
     {
-        linkListNode *newNode = (linkListNode *)malloc(sizeof(linkListNode));
-        newNode->data = list_get(datas, i);
-        this->linklistType.linklistHead.mHead->ptr.next = newNode;
-        this->linklistType.linklistHead.mHead = newNode;
-        this->length++;
+        self->length = datas->length;
+        for (size_t i = 0; i < datas->length; i++)
+        {
+            linkListNode *newNode = (linkListNode *)malloc(sizeof(linkListNode));
+            newNode->data = list_get(datas, i);
+            self->linklistType.linklistHead.mHead->ptr.next = newNode;
+            self->linklistType.linklistHead.mHead = newNode;
+            self->length++;
+        }
+    }
+    else
+    {
+        self->length = 0;
     }
 }
 
-const linkListNode *listWithhead_get(linkList *this, size_t index)
+const linkListNode *listWithhead_get(linkList *self, size_t index)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("index is out of the range!");
         return NULL;
     }
-    linkListNode* tmp = this->linklistType.linklistHead.mHead;
+    linkListNode *tmp = self->linklistType.linklistHead.mHead;
     while (index)
     {
         tmp = tmp->ptr.next;
@@ -47,126 +75,156 @@ const linkListNode *listWithhead_get(linkList *this, size_t index)
     return tmp;
 }
 
-void listWithhead_remove(linkList *this, size_t index)
+void listWithhead_remove(linkList *self, size_t index)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("index is out of the range!");
         return NULL;
     }
-    linkListNode* pre = listWithhead_get(this, index - 1);
+    linkListNode *pre;
+    if (!index)
+    {
+        pre = self->linklistType.linklistHead.mHead;
+    }
+    else
+    {
+        pre = listWithhead_get(self, index - 1);
+    }
     assert(pre->ptr.next->ptr.next);
     pre = pre->ptr.next->ptr.next;
-    this->length--;
+    self->length--;
 }
 
-void listWithhead_replace(linkList *this, size_t index, void *data)
+void listWithhead_replace(linkList *self, size_t index, void *data)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("index is out of the range!");
         return NULL;
     }
-    linkListNode *cur = listWithhead_get(this, index);
+    linkListNode *cur = listWithhead_get(self, index);
     cur->data = data;
 }
 
-void listWithhead_insert(linkList *this, size_t index, void *data)
+void listWithhead_insert(linkList *self, size_t index, void *data)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("index is out of the range!");
         return NULL;
     }
-    linkListNode *cur = listWithhead_get(this, index - 1);
-    linkListNode* newNode = (linkListNode*)malloc(sizeof(linkListNode));
+    linkListNode *cur;
+    if (!index)
+    {
+        cur = self->linklistType.linklistHead.mHead;
+    }
+    else
+    {
+        cur = listWithhead_get(self, index - 1);
+    }
+    linkListNode *newNode = (linkListNode *)malloc(sizeof(linkListNode));
     newNode->data = data;
-    linkList* tmp = cur->ptr.next;
+    linkList *tmp = cur->ptr.next;
     cur->ptr.next = newNode;
     newNode->ptr.next = tmp;
-    this->length++;
+    self->length++;
 }
 
 /*－－－－－－－－－－－－－－ 带头节点与尾节点的双向循环链表 －－－－－－－－－－－－－－－－*/
 
-void listWithheadTail_head_init(linkList *this, list *datas)
+void listWithheadTail_head_init(linkList *self, list *datas)
 {
-    assert(datas);
-    if (!this)
+    self->linklistType.linklistHeadTail.mHead = (linkListNode *)malloc(sizeof(linkListNode));
+    self->linklistType.linklistHeadTail.mTail = self->linklistType.linklistHeadTail.mHead;
+    if (datas)
     {
-        this = (linkList *)malloc(sizeof(linkList));
+        self->length = datas->length;
+        for (size_t i = 0; i < datas->length; i++)
+        {
+            linkListNode *newNode = (linkListNode *)malloc(sizeof(linkListNode));
+            newNode->data = list_get(datas, i);
+            newNode->ptr.nextAndpre.next = self->linklistType.linklistHeadTail.mHead;
+            self->linklistType.linklistHeadTail.mHead->ptr.nextAndpre.pre = newNode;
+            self->linklistType.linklistHeadTail.mHead = newNode;
+            self->linklistType.linklistHeadTail.mTail = newNode;
+            self->length++;
+        }
     }
-    this->linklistType.linklistHeadTail.mHead = (linkListNode *)malloc(sizeof(linkListNode));
-    this->linklistType.linklistHeadTail.mTail = this->linklistType.linklistHeadTail.mHead;
-    this->length = datas->length;
-    for (size_t i = 0; i < datas->length; i++)
+    else
     {
-        linkListNode *newNode = (linkListNode *)malloc(sizeof(linkListNode));
-        newNode->data = list_get(datas, i);
-        newNode->ptr.nextAndpre.next = this->linklistType.linklistHeadTail.mHead;
-        this->linklistType.linklistHeadTail.mHead->ptr.nextAndpre.pre = newNode;
-        this->linklistType.linklistHeadTail.mHead = newNode;
-        this->linklistType.linklistHeadTail.mTail = newNode;
-        this->length++;
+        self->length = 0;
     }
 }
 
-void listWithheadTail_tail_init(linkList *this, list *datas)
+void listWithheadTail_tail_init(linkList *self, list *datas)
 {
-    assert(datas);
-    if (!this)
+    self->linklistType.linklistHeadTail.mHead = (linkListNode *)malloc(sizeof(linkListNode));
+    self->linklistType.linklistHeadTail.mTail = self->linklistType.linklistHeadTail.mHead;
+    if (datas)
     {
-        this = (linkList *)malloc(sizeof(linkList));
-    }
-    this->linklistType.linklistHeadTail.mHead = (linkListNode *)malloc(sizeof(linkListNode));
-    this->linklistType.linklistHeadTail.mTail = this->linklistType.linklistHeadTail.mHead;
-    this->length = datas->length;
-    for (size_t i = 0; i < datas->length; i++)
-    {
-        linkListNode *newNode = (linkListNode *)malloc(sizeof(linkListNode));
-        newNode->data = list_get(datas, i);
-        this->linklistType.linklistHeadTail.mHead->ptr.nextAndpre.next = newNode;
-        newNode->ptr.nextAndpre.pre = this->linklistType.linklistHeadTail.mHead; this->linklistType.linklistHeadTail.mHead = newNode;
-        this->length++;
+        self->length = datas->length;
+        for (size_t i = 0; i < datas->length; i++)
+        {
+            linkListNode *newNode = (linkListNode *)malloc(sizeof(linkListNode));
+            newNode->data = list_get(datas, i);
+            self->linklistType.linklistHeadTail.mHead->ptr.nextAndpre.next = newNode;
+            newNode->ptr.nextAndpre.pre = self->linklistType.linklistHeadTail.mHead;
+            self->linklistType.linklistHeadTail.mHead = newNode;
+            self->length++;
+        }
     }
 }
 
-void listWithheadTail_remove(linkList *this, size_t index)
+void listWithheadTail_remove(linkList *self, size_t index)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("index is out of the range!");
         return NULL;
     }
-    linkListNode* pre = listWithheadTail_get(this, index - 1);
+    linkListNode *pre;
+    if (!index)
+    {
+        pre = self->linklistType.linklistHeadTail.mHead;
+    }
+    else
+    {
+        pre = listWithheadTail_get(self, index - 1);
+    }
     assert(pre);
     assert(pre->ptr.nextAndpre.next->ptr.nextAndpre.next);
-    pre = pre->ptr.nextAndpre.next->ptr.nextAndpre.next;
-    pre->ptr.nextAndpre.next->ptr.nextAndpre.next->ptr.nextAndpre.pre = pre;
+    linkListNode *next = pre->ptr.nextAndpre.next->ptr.nextAndpre.next;
+    linkList *tmp = pre;
+    pre = next;
+    if (index)
+    {
+        pre->ptr.nextAndpre.next->ptr.nextAndpre.next->ptr.nextAndpre.pre = tmp;
+    }
 }
 
-const linkListNode *listWithheadTail_get(linkList *this, size_t index)
+const linkListNode *listWithheadTail_get(linkList *self, size_t index)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("index is out of the range!");
         return NULL;
     }
-    if (index > this->length / 2)
+    if (index > self->length / 2)
     {
-        linkListNode* tmp = this->linklistType.linklistHeadTail.mHead;
+        linkListNode *tmp = self->linklistType.linklistHeadTail.mHead;
         while (index)
         {
             tmp = tmp->ptr.nextAndpre.next;
         }
         return tmp;
     }
-    linkListNode* tmp = this->linklistType.linklistHeadTail.mTail;
+    linkListNode *tmp = self->linklistType.linklistHeadTail.mTail;
     while (index)
     {
         tmp = tmp->ptr.nextAndpre.pre;
@@ -174,35 +232,46 @@ const linkListNode *listWithheadTail_get(linkList *this, size_t index)
     return tmp;
 }
 
-void listWithheadTail_replace(linkList *this, size_t index, void *data)
+void listWithheadTail_replace(linkList *self, size_t index, void *data)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("index is out of the range!");
         return NULL;
     }
-    linkListNode* cur = listWithheadTail_get(this, index);
+    linkListNode *cur = listWithheadTail_get(self, index);
     assert(cur);
     cur->data = data;
 }
 
-void listWithheadTail_insert(linkList *this, size_t index, void *data)
+void listWithheadTail_insert(linkList *self, size_t index, void *data)
 {
-    assert(this);
-    if (index < 0 || index > this->length)
+    assert(self);
+    if (index < 0 || index > self->length)
     {
         printf("index is out of the range!");
         return NULL;
     }
-    linkListNode* pre = listWithheadTail_get(this, index - 1);
+    linkListNode *pre;
+    if (!index)
+    {
+        pre = self->linklistType.linklistHeadTail.mHead;
+    }
+    else
+    {
+        pre = listWithheadTail_get(self, index - 1);
+    }
     assert(pre);
-    linkListNode* newNode = (linkListNode*)malloc(sizeof(linkListNode));
+    linkListNode *newNode = (linkListNode *)malloc(sizeof(linkListNode));
     newNode->data = data;
-    linkListNode* tmp = pre->ptr.nextAndpre.next;
-    assert(tmp);
+    linkListNode *tmp = pre->ptr.nextAndpre.next;
     pre->ptr.nextAndpre.next = newNode;
     newNode->ptr.nextAndpre.pre = tmp;
     newNode->ptr.nextAndpre.next = tmp;
-    tmp->ptr.nextAndpre.pre = newNode;
+    if (index)
+    {
+        tmp->ptr.nextAndpre.pre = newNode;
+    }
+    assert(tmp);
 }

@@ -37,21 +37,37 @@ typedef struct linkList
     } linklistType;
 } linkList;
 
+/**
+ * @brief 链表是否为空
+ *
+ * @param self
+ * @return int
+ */
+int linklist_empty(linkList *self);
+
+/**
+ * @brief 链表长度
+ * 
+ * @param self 
+ * @return int 
+ */
+int linklist_length(linkList *self);
+
 /*－－－－－－－－－－－－ 带头节点的单链表 －－－－－－－－－－－－－－－－*/
 
-void listWithhead_head_init(linkList *this, list *datas);
+void listWithhead_head_init(linkList *self, list *datas);
 
-void listWithhead_tail_init(linkList *this, list *datas);
+void listWithhead_tail_init(linkList *self, list *datas);
 
-void listWithhead_remove(linkList *this, size_t index);
+void listWithhead_remove(linkList *self, size_t index);
 
-const linkListNode *listWithhead_get(linkList *this, size_t index);
+const linkListNode *listWithhead_get(linkList *self, size_t index);
 
-void listWithhead_replace(linkList *this, size_t index, void *data);
+void listWithhead_replace(linkList *self, size_t index, void *data);
 
-void listWithhead_insert(linkList *this, size_t index, void *data);
+void listWithhead_insert(linkList *self, size_t index, void *data);
 
-#define listWithhead_print(this, printfunc)                    \
+#define listWithhead_print(self, printfunc)                    \
     linkListNode *tmp = link->linklistType.linklistHead.mHead; \
     while (tmp)                                                \
     {                                                          \
@@ -61,20 +77,20 @@ void listWithhead_insert(linkList *this, size_t index, void *data);
 
 /*－－－－－－－－－－－－－－ 带头节点与尾节点的双向循环链表 －－－－－－－－－－－－－－－－*/
 
-void listWithheadTail_head_init(linkList *this, list *datas);
+void listWithhead_head_initlistWithhead_head_init(linkList *self, list *datas);
 
-void listWithheadTail_tail_init(linkList *this, list *datas);
+void listWithheadTail_tail_init(linkList *self, list *datas);
 
-void listWithheadTail_remove(linkList *this, size_t index);
+void listWithheadTail_remove(linkList *self, size_t index);
 
-const linkListNode *listWithheadTail_get(linkList *this, size_t index);
+const linkListNode *listWithheadTail_get(linkList *self, size_t index);
 
-void listWithheadTail_replace(linkList *this, size_t index, void *data);
+void listWithheadTail_replace(linkList *self, size_t index, void *data);
 
-void listWithheadTail_insert(linkList *this, size_t index, void *data);
+void listWithheadTail_insert(linkList *self, size_t index, void *data);
 
-#define listWithheadTail_print(this, printfunc)                    \
-    linkListNode *tmp = this->linklistType.linklistHeadTail.mHead; \
+#define listWithheadTail_print(self, printfunc)                    \
+    linkListNode *tmp = self->linklistType.linklistHeadTail.mHead; \
     while (tmp)                                                    \
     {                                                              \
         printfunc;                                                 \

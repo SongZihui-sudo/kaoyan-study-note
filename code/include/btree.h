@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 #include <mystring.h>
+#include <stack.h>
+#include <deque.h>
 
 typedef struct btree_node
 {
