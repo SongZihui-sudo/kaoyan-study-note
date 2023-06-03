@@ -129,4 +129,11 @@ char string_get(string* self, size_t index);
  */
 void string_print(string* self);
 
+/**
+ * @brief 字符串销毁
+ * 
+ * @param self 
+ */
+void string_destory(string* self);
+
 #endif

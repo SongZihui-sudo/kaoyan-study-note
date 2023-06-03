@@ -173,3 +173,10 @@ void string_print(string *self)
     assert(self);
     printf("%s", self->mBuffer);
 }
+
+void string_destory(string *self)
+{
+    assert(self);
+    free(self->mBuffer);
+    self->mLength = self->mSize = 0;
+}
